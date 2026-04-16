@@ -1,24 +1,35 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import * as authService from "./auth.service";
 
-const users: any[] = [];
+// REGISTER
+export const register = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-export const register = (req: Request, res: Response) => {
-  const { email, password } = req.body;
+    await authService.registerUser(email, password);
 
-  users.push({ email, password });
-
-  res.json({ success: true });
+    res.json({
+      success: true,
+      message: "User registered successfully",
+    });
+  } catch (err: any) {
+    res.status(400).json({
+      message: err.message,
+    });
+  }
 };
 
-export const login = (req: Request, res: Response) => {
-  const { email, password } = req.body;
+// LOGIN
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-  const user = users.find(u => u.email === email && u.password === password);
+    const data = await authService.loginUser(email, password);
 
-  if (!user) return res.status(401).json({ message: "Invalid credentials" });
-
-  const token = jwt.sign({ email }, "secret", { expiresIn: "1d" });
-
-  res.json({ token });
+    res.json(data);
+  } catch (err: any) {
+    res.status(401).json({
+      message: err.message,
+    });
+  }
 };

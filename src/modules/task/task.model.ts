@@ -9,8 +9,10 @@ const taskSchema = new mongoose.Schema(
       default: "todo",
     },
     projectId: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+    teamId: mongoose.Schema.Types.ObjectId,
   },
   { timestamps: true }
 );
 
 export const Task = mongoose.model("Task", taskSchema);
+
