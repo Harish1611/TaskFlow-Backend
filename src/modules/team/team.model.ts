@@ -3,7 +3,11 @@ import mongoose from "mongoose";
 const teamSchema = new mongoose.Schema(
   {
     name: String,
-    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
